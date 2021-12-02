@@ -1,6 +1,4 @@
 export monitorDevice="wlan1mon"
-# https://macaddress.io/ ApiKey
-export maclookupApiKey=""
 # Your AP mac address
 export defaultRouterMacAdress=""
 

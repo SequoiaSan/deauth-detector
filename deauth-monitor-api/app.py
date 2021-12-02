@@ -14,8 +14,6 @@ CORS(app, resources={r'*': {'origins': '*'}})
 client = MongoClient('mongodb://localhost:27017')
 db = client['deauth_attacks']
 attacksCollection = db.attacks
-lastAttackCollection = db.lastAttack
-
 
 @app.route('/')
 def index():

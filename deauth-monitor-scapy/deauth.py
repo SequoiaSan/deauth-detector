@@ -5,10 +5,7 @@ import json
 import os
 
 from pymongo import MongoClient
-from maclookup import ApiClient
-
-# Mac lookup client - free for 1000 requests
-mac_client = ApiClient(os.environ.get('maclookupApiKey'))
+from requests import get
 
 # MongoDB connection
 client = MongoClient('localhost', 27017)
@@ -86,21 +83,33 @@ class DeauthenticationDetector:
             self.data[str([router, victim])] = self.data[str([router, victim])]+1
         else:
             self.data[str([router, victim])] = 1
-        
+
         return
 
     def lookup_mac(self, mac_address):
         '''
         Looks up mac address using https://macaddress.io
         '''
-        mac_info = mac_client.get(mac_address.replace(":", ""))
+        print(f"Mac captured {mac_address}")
+
+        macsend = "https://api.macvendors.com/" + mac_address.replace(":", "-")
+        vendorsearch = get(macsend).text
+        company_name = "N\A"
+        if "Not Found" in vendorsearch:
+            company_name = "N\A"
+        elif "errors" in vendorsearch:
+            company_name = "N\A"
+        else:
+            company_name = vendorsearch
+        #mac_info = MacLookup().lookup(mac_address.replace(":", ":"))
+        print(f"Vendor name {company_name}")
 
         return {
-            'oui': mac_info.vendor_details.oui,
-            'is_private': mac_info.vendor_details.is_private,
-            'company_name': mac_info.vendor_details.company_name,
-            'company_address': mac_info.vendor_details.company_address,
-            'country_code': mac_info.vendor_details.country_code
+            'oui':'N\A',
+            'is_private':False,
+            'company_name':company_name,
+            'company_address':'N\A',
+            'country_code':'N\A'
         }
 
 

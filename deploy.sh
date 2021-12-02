@@ -1,9 +1,15 @@
-airmon-ng start wlan1 &
+export monitorDevice="wlan1mon"
+# https://macaddress.io/ ApiKey
+export maclookupApiKey="XXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+# Your AP mac address
+export defaultRouterMacAdress="XX:XX:XX:XX:XX:XX"
+
+sudo airmon-ng start wlan1 &
 
 # Start the scapy application
 cd deauth-monitor-scapy
 pip3 install -r requirements.txt
-python3 deauth.py &
+sudo python3 deauth.py &
 cd ..
 
 # Start the Flask API

@@ -8,7 +8,7 @@ from pymongo import MongoClient
 from maclookup import ApiClient
 
 # Mac lookup client - free for 1000 requests
-mac_client = ApiClient("at_JsS3YEzdvi4nFYAQBUF5oQMe9tAYb")
+mac_client = ApiClient(os.environ.get('maclookupApiKey'))
 
 # MongoDB connection
 client = MongoClient('localhost', 27017)
@@ -16,7 +16,7 @@ db = client['deauth_attacks']
 attacks = db.attacks
 
 # Router mac
-HARDCODED_ROUTER_MAC = "20:4e:7f:0e:df:46"
+HARDCODED_ROUTER_MAC = os.environ.get('defaultRouterMacAdress')
 
 # Monitor mode wifi card
 monitor_device = os.environ.get('monitorDevice')

@@ -37,9 +37,9 @@ const LastAttackInfo = ({ lastAttackData }) => {
         </GridItem>
         <GridItem xs={12} sm={6} md={3}>
           <Card>
-            <CardHeader color="info" stats icon>
-              <CardIcon color="info">
-                <Icon>slow_motion_video</Icon>
+            <CardHeader color="danger" stats icon>
+              <CardIcon color="danger">
+                <Icon>report</Icon>
               </CardIcon>
               <p className={classes.cardCategory}>
                 Packet Type
@@ -56,9 +56,45 @@ const LastAttackInfo = ({ lastAttackData }) => {
         </GridItem>
         <GridItem xs={12} sm={6} md={3}>
           <Card>
+            <CardHeader color="info" stats icon>
+              <CardIcon color="info">
+                <Icon>network_wifi</Icon>
+              </CardIcon>
+              <p className={classes.cardCategory}>Signal Strength</p>
+              <h3 className={classes.cardTitle}>{lastAttackData['signalStrength']}</h3>
+            </CardHeader>
+            <CardFooter stats>
+              <div className={classes.stats}>
+                <Icon>info</Icon>
+                Signal strength.
+              </div>
+            </CardFooter>
+          </Card>
+        </GridItem>
+        <GridItem xs={12} sm={6} md={3}>
+          <Card>
+            <CardHeader color="info" stats icon>
+              <CardIcon color="info">
+                <Icon>data_object</Icon>
+              </CardIcon>
+              <p className={classes.cardCategory}>Channel Flags</p>
+              <h3 className={classes.cardTitle}>{lastAttackData['channelFlags']}</h3>
+            </CardHeader>
+            <CardFooter stats>
+              <div className={classes.stats}>
+                <Icon>info</Icon>
+                Channel flags.
+              </div>
+            </CardFooter>
+          </Card>
+        </GridItem>
+      </GridContainer>
+      <GridContainer>
+      <GridItem xs={12} sm={6} md={3}>
+          <Card>
             <CardHeader color="success" stats icon>
               <CardIcon color="success">
-                <Icon>person_outline</Icon>
+                <Icon>router</Icon>
               </CardIcon>
               <p className={classes.cardCategory}>Victims MAC Address</p>
               <h3 className={classes.cardTitle}>{lastAttackData['victim']}</h3>
@@ -73,45 +109,9 @@ const LastAttackInfo = ({ lastAttackData }) => {
         </GridItem>
         <GridItem xs={12} sm={6} md={3}>
           <Card>
-            <CardHeader color="warning" stats icon>
-              <CardIcon color="warning">
-                <Icon>verified_user</Icon>
-              </CardIcon>
-              <p className={classes.cardCategory}>Attacker's Router MAC Address</p>
-              <h3 className={classes.cardTitle}>{lastAttackData['router']}</h3>
-            </CardHeader>
-            <CardFooter stats>
-              <div className={classes.stats}>
-                <Icon>info</Icon>
-                MAC address of the client.
-              </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
-      </GridContainer>
-      <GridContainer>
-        <GridItem xs={12} sm={6} md={3}>
-          <Card>
             <CardHeader color="success" stats icon>
               <CardIcon color="success">
-                <Icon>person_outline</Icon>
-              </CardIcon>
-              <p className={classes.cardCategory}>Victim's Device OUI</p>
-              <h3 className={classes.cardTitle}>{lastAttackData.victimInfo ? lastAttackData.victimInfo.oui : ''}</h3>
-            </CardHeader>
-            <CardFooter stats>
-              <div className={classes.stats}>
-                <Icon>info</Icon>
-                OUI of the victim device.
-              </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
-        <GridItem xs={12} sm={6} md={3}>
-          <Card>
-            <CardHeader color="success" stats icon>
-              <CardIcon color="success">
-                <Icon>verified_user</Icon>
+                <Icon>factory</Icon>
               </CardIcon>
               <p className={classes.cardCategory}>Victim's Device Company Name</p>
               <h3 className={classes.cardTitle}>{lastAttackData.victimInfo ? lastAttackData.victimInfo.company_name : ''}</h3>
@@ -128,15 +128,15 @@ const LastAttackInfo = ({ lastAttackData }) => {
           <Card>
             <CardHeader color="warning" stats icon>
               <CardIcon color="warning">
-                <Icon>watch_later</Icon>
+                <Icon>router</Icon>
               </CardIcon>
-              <p className={classes.cardCategory}>Attacker's Router OUI</p>
-              <h3 className={classes.cardTitle}>{lastAttackData.routerInfo ? lastAttackData.routerInfo.oui : ''}</h3>
+              <p className={classes.cardCategory}>Attacker's Router MAC Address</p>
+              <h3 className={classes.cardTitle}>{lastAttackData['router']}</h3>
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
                 <Icon>info</Icon>
-                OUI of the router that performed the attack.
+                MAC address of the client.
               </div>
             </CardFooter>
           </Card>
@@ -145,7 +145,7 @@ const LastAttackInfo = ({ lastAttackData }) => {
           <Card>
             <CardHeader color="warning" stats icon>
               <CardIcon color="warning">
-                <Icon>slow_motion_video</Icon>
+                <Icon>factory</Icon>
               </CardIcon>
               <p className={classes.cardCategory}>
                 Attacker's Router Company Name

@@ -1,4 +1,6 @@
 export monitorDevice="wlan1mon"
+# Listning port
+export listenPort=80
 # Your AP mac address
 export defaultRouterMacAdress=""
 

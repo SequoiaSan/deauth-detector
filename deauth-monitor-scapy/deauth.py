@@ -48,7 +48,7 @@ class DeauthenticationDetector:
         '''
         Function For Creating Python Scapy.sniff Function
         '''
-        scapy.sniff(prn=self.extract_packets, *self.args, **self.kwargs)
+        scapy.sniff(prn=self.extract_packets, store=0, *self.args, **self.kwargs)
         return
 
     def save_packet(self, addr1, addr2, signal_strength, channel_flags, packet_length, pktType):
@@ -92,24 +92,35 @@ class DeauthenticationDetector:
         '''
         print(f"Mac captured {mac_address}")
 
-        macsend = "https://api.macvendors.com/" + mac_address.replace(":", "-")
-        vendorsearch = get(macsend).text
-        company_name = "N\A"
-        if "Not Found" in vendorsearch:
-            company_name = "N\A"
-        elif "errors" in vendorsearch:
-            company_name = "N\A"
+        macsend = "https://api.maclookup.app/v2/macs/" + mac_address
+        result = get(macsend)
+        textResult = result.text
+        result = result.json()
+
+        oui = 'N\A'
+        isPrivate = False
+        company_name = 'N\A'
+        company_address = 'N\A'
+        country_code = 'N\A'
+        if "Too Many Requests" in textResult:
+            print("Too Many Requests")
+        elif "Unauthorized" in textResult:
+            print("Unauthorized")
+        elif "Bad Request" in textResult:
+            print("Bad Request")
         else:
-            company_name = vendorsearch
-        #mac_info = MacLookup().lookup(mac_address.replace(":", ":"))
-        print(f"Vendor name {company_name}")
+            oui = result['macPrefix']
+            isPrivate = result['isPrivate']
+            company_name = result['company']
+            company_address = result['address']
+            country_code = result['country']
 
         return {
-            'oui':'N\A',
-            'is_private':False,
+            'oui':oui,
+            'is_private':isPrivate,
             'company_name':company_name,
-            'company_address':'N\A',
-            'country_code':'N\A'
+            'company_address':company_address,
+            'country_code':country_code
         }
 
 

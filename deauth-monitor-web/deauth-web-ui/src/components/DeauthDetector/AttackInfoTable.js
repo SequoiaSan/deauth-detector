@@ -29,8 +29,12 @@ const AttackInfoTable = ({ tableData }) => {
               "Attack No",
               "Time Occurred",
               "Packet Type Sent",
+              "Signal Strenght",
+              "Channel Flags",
               "Victim MAC",
-              "Router MAC"
+              "Victim Company Name",
+              "Router MAC",
+              "Router Company Name"
             ]}
             tableData={tableData}
           />

@@ -9,6 +9,42 @@ import AttackInfoLineChart from '../../components/DeauthDetector/AttackInfoLineC
 import AttackInfoTable from '../../components/DeauthDetector/AttackInfoTable';
 import GridContainer from "../../components/Grid/GridContainer.js";
 
+let packetReasons = [
+  'Reserved',
+  'Unspecified reason',
+  'Previous authentication no longer valid',
+  'Deauthenticated because sending station (STA) is leaving or has left Independent Basic Service Set (IBSS) or ESS',
+  'Disassociated due to inactivity',
+  'Disassociated because WAP device is unable to handle all currently associated STAs',
+  'Class 2 frame received from nonauthenticated STA',
+  'Class 3 frame received from nonassociated STA',
+  'Disassociated because sending STA is leaving or has left Basic Service Set (BSS)',
+  'STA requesting (re)association is not authenticated with responding STA',
+  'Disassociated because the information in the Power Capability element is unacceptable',
+  'Disassociated because the information in the Supported Channels element is unacceptable',
+  'Disassociated due to BSS Transition Management',
+  'Invalid element, that is, an element defined in this standard for which the content does not meet the specifications in Clause 8',
+  'Message integrity code (MIC) failure',
+  '4-Way Handshake timeout',
+  'Group Key Handshake timeout',
+  'Element in 4-Way Handshake different from (Re)Association Request/ Probe Response/Beacon frame',
+  'Invalid group cipher',
+  'Invalid pairwise cipher',
+  'Invalid AKMP',
+  'Unsupported RSNE version',
+  'Invalid RSNE capabilities',
+  'IEEE 802.1X authentication failed',
+  'Cipher suite rejected because of the security policy'
+];
+
+function getPacketReason(paketType) {
+  if(typeof paketType == 'number')
+  {
+    return packetReasons[paketType];
+  }
+
+  return paketType;
+}
 
 const Dashboard = () => {
   const [lastAttackData, setLastAttackData] = useState({});
@@ -18,7 +54,9 @@ const Dashboard = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await Axios.get('http://localhost:5000/');
+      const response = await Axios.get('http://localhost:5000/attacks');
+      
+      response.data.lastAttack['type'] = getPacketReason(response.data.lastAttack['type']);
       updateLastAttackData(response.data.lastAttack);
       updateBarChartData(response.data.deauthAttacks);
       updateLineChartData(response.data.deauthAttacks);
@@ -51,9 +89,9 @@ const Dashboard = () => {
       attackNumber++;
 
       // Destructure attack data from API results and add to the table data
-      const { timestamp, type, victim, router } = deauthAttack;
+      const { timestamp, type, signalStrength, channelFlags, victim, victimInfo, router, routerInfo } = deauthAttack;
       const formattedTimestamp = moment.unix(timestamp).format('MM/DD/YYY HH:mm');
-      deauthTableData.push([attackNumber, formattedTimestamp, type, victim, router]);
+      deauthTableData.push([attackNumber, formattedTimestamp, getPacketReason(type), signalStrength, channelFlags, victim, victimInfo['company_name'], router, routerInfo['company_name']]);
     });
     setTableData(deauthTableData);
   };

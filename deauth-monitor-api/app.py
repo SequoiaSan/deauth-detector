@@ -15,21 +15,29 @@ client = MongoClient('mongodb://localhost:27017')
 db = client['deauth_attacks']
 attacksCollection = db.attacks
 
-@app.route('/')
+@app.route('/attacks')
 def index():
     try:
-        deauthAttacks = attacksCollection.find()
+        deauthAttacks = list(attacksCollection.find())
 
-        if deauthAttacks.count() > 0:
+        if len(deauthAttacks) > 0:
             response = {
-                "lastAttack": deauthAttacks[deauthAttacks.count() - 1],
+                "lastAttack": deauthAttacks[len(deauthAttacks) - 1],
                 "deauthAttacks": deauthAttacks
             }
             return dumps(response)
         else:
-            return '', 404
+            return 'No DB entries', 404
     except:
-        return '', 500
+        return 'Failed to process query', 500
+
+@app.route('/cleardb')
+def cleardb():
+    try:
+        reset_db()
+        return 'Database cleared'
+    except:
+        return 'Failed to process query', 500    
 
 
 if __name__ == '__main__':
@@ -40,4 +48,4 @@ if __name__ == '__main__':
     if sys.argv[1] == 'reset_db':
         reset_db()
 
-    app.run()
+    app.run(host='0.0.0.0')

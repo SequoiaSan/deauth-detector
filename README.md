@@ -25,44 +25,34 @@ Follow these steps to setup the Deauthentication Detector on your current comput
 
 1. Clone this repository
 2. Navigate to the deauth-detector directory via the command line
-3. Set environmental variable with monitor mode device name
+3. Run the initial_setup.sh bash script
 ```
-export monitorDevice="wlan1mon"
+./initial_setup.sh.sh
 ```
-4. Run the deploy.sh bash script
-```
-./deploy.sh
-```
-4. Once installation concludes, navigate to localhost:3000 via a web browser to view the running dashboard
+4. Once installation concludes, navigate to localhost:80 via a web browser to view the running dashboard
 
 ## ISO Image Installation Steps
 
 Follow these steps to setup RaspberryPi - Deauthentication Detection for use with a RaspberryPi
 
 1. Download [BalenaEtcher](https://www.balena.io/etcher/)
-2. Download the RaspberryPi - Deauthentication Detection image from [here](https://drive.google.com/file/d/1YiHSfToLgmMywyt-2Qi9dPQ-0Dhis5BG/view)
-3. Use BalenaEtcher to burn the Deauthencation Detection .img to an sd card
+2. Download the RaspberryPi - [Ubuntu Server 20.04.3 arm64](https://ubuntu.com/download/raspberry-pi/thank-you?version=20.04.3&architecture=server-arm64+raspi)
+3. Use BalenaEtcher to burn the Ubuntu Server .img to an sd card
 4. Boot up the raspberrypi with a monitor mode enabled wifi card
-5. Set environmental variable with monitor mode device name
-```
-export monitorDevice="wlan1mon"
-```
-6. Navigate to the deauth-detector directory
+5. Navigate to the deauth-detector directory
 ```
 cd ~/deauth-detector
 ```
-7. Pull the latest code from GitHub
+6. Pull the latest code from GitHub
 ```
 git pull origin master
 ```
-8. Run the deploy.sh bash script
+7. Run the initial_setup.sh bash script
 ```
-sudo -E bash -c './deploy.sh'
+sudo -E bash -c './initial_setup.sh'
 ```
-9. Once installation concludes, navigate to localhost:3000 via a web browser to view the running dashboard
+8. Once installation concludes, navigate to localhost:80 via a web browser to view the running dashboard
 
 ## Resources
 
 * [Video](https://youtu.be/SVwhGE7bZN8)
-
-* [Slides](https://drive.google.com/file/d/1YiHSfToLgmMywyt-2Qi9dPQ-0Dhis5BG/view)

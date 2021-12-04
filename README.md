@@ -27,7 +27,7 @@ Follow these steps to setup the Deauthentication Detector on your current comput
 2. Navigate to the deauth-detector directory via the command line
 3. Run the initial_setup.sh bash script
 ```
-./initial_setup.sh.sh
+./initial_setup.sh
 ```
 4. Once installation concludes, navigate to localhost:80 via a web browser to view the running dashboard
 

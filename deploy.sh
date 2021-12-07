@@ -1,10 +1,12 @@
-export monitorDevice="wlan1mon"
+export wlanDeviceToUse="wlan0"
+
+export monitorDevice="${wlanDeviceToUse}mon"
 # Listning port
 export listenPort=80
 # Your AP mac address
 export defaultRouterMacAdress=""
 
-airmon-ng start wlan1 &
+airmon-ng start $wlanDeviceToUse &
 
 # Start the scapy application
 cd deauth-monitor-scapy
@@ -15,7 +17,7 @@ cd ..
 # Start the Flask API
 cd deauth-monitor-api
 pip3 install -r requirements.txt
-python3 app.py reset_db &
+python3 app.py mock_data &
 cd ..
 
 # Start the React application

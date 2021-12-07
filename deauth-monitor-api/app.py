@@ -2,23 +2,23 @@ import sys
 from flask import Flask, jsonify
 from bson.json_util import dumps
 from flask_cors import CORS
-from pymongo import MongoClient
 from db_utils import reset_db, populate_db_with_mock_data
+
+from globalVars import dbAttacks, dbLookups
 
 app = Flask(__name__)
 
 # Allow all origins
 CORS(app, resources={r'*': {'origins': '*'}})
 
-# MongoDB Setup
-client = MongoClient('mongodb://localhost:27017')
-db = client['deauth_attacks']
-attacksCollection = db.attacks
+db = dbAttacks
 
 @app.route('/attacks')
 def index():
     try:
-        deauthAttacks = list(attacksCollection.find())
+        deauthAttacks = list(db.all())
+        for item in deauthAttacks:
+            print(item)
 
         if len(deauthAttacks) > 0:
             response = {

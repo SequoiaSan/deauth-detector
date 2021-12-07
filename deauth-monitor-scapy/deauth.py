@@ -4,13 +4,13 @@ import scapy.all as scapy
 import json
 import os
 
-from pymongo import MongoClient
 from requests import get
 
-# MongoDB connection
-client = MongoClient('localhost', 27017)
-db = client['deauth_attacks']
-attacks = db.attacks
+sys.path.append("../deauth-monitor-api")
+from globalVars import dbAttacks, dbLookups
+
+db = dbAttacks
+dbLook = dbLookups
 
 # Router mac
 HARDCODED_ROUTER_MAC = os.environ.get('defaultRouterMacAdress')
@@ -67,7 +67,7 @@ class DeauthenticationDetector:
         router_info = self.lookup_mac(router)
         victim_info = self.lookup_mac(victim)
 
-        attacks.insert_one({
+        db.insert({
             'router': router,
             'victim': victim,
             'routerInfo': router_info,

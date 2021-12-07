@@ -1,7 +1,4 @@
-from pymongo import MongoClient
 from globalVars import dbAttacks, dbLookups
-
-db = dbAttacks
 
 mock_data = {
     'deauthAttacks': [
@@ -155,7 +152,8 @@ mock_data = {
 # Method to drop the deauth_attacks MongoDB database
 def reset_db():
     print('Clearing database...')
-    db.truncate()
+    dbAttacks.truncate()
+    dbLookups.truncate()
 
 
 # Method to populate the deauth_attacks MongoDB database with mock data
@@ -163,7 +161,6 @@ def populate_db_with_mock_data():
     print('Populating database with mock data...')
 
     try:
-        for data in mock_data:
-            db.insert(data)
+        dbAttacks.insert_multiple(data)
     except:
       print('ERROR: Failed to load mock data into the database. Message Cameron Cooper to fix it')

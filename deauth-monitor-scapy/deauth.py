@@ -8,9 +8,7 @@ from requests import get
 
 sys.path.append("../deauth-monitor-api")
 from globalVars import dbAttacks, dbLookups
-
-db = dbAttacks
-dbLook = dbLookups
+from tinydb import Query
 
 # Router mac
 HARDCODED_ROUTER_MAC = os.environ.get('defaultRouterMacAdress')
@@ -67,7 +65,7 @@ class DeauthenticationDetector:
         router_info = self.lookup_mac(router)
         victim_info = self.lookup_mac(victim)
 
-        db.insert({
+        dbAttacks.insert({
             'router': router,
             'victim': victim,
             'routerInfo': router_info,
@@ -88,32 +86,44 @@ class DeauthenticationDetector:
 
     def lookup_mac(self, mac_address):
         '''
-        Looks up mac address using https://macaddress.io
+        Looks up mac address using https://api.maclookup.app/
         '''
         print(f"Mac captured {mac_address}")
-
-        macsend = "https://api.maclookup.app/v2/macs/" + mac_address
-        result = get(macsend)
-        textResult = result.text
-        result = result.json()
 
         oui = 'N\A'
         isPrivate = False
         company_name = 'N\A'
         company_address = 'N\A'
         country_code = 'N\A'
-        if "Too Many Requests" in textResult:
-            print("Too Many Requests")
-        elif "Unauthorized" in textResult:
-            print("Unauthorized")
-        elif "Bad Request" in textResult:
-            print("Bad Request")
+
+        queryMacAddress = Query()
+        macAdressData = dbLookups.get(queryMacAddress.router == mac_address or queryMacAddress.victim == mac_address)
+        if not macAdressData:
+            macsend = "https://api.maclookup.app/v2/macs/" + mac_address
+            result = get(macsend)
+            textResult = result.text
+            result = result.json()
+
+            if "Too Many Requests" in textResult:
+                print("Too Many Requests")
+            elif "Unauthorized" in textResult:
+                print("Unauthorized")
+            elif "Bad Request" in textResult:
+                print("Bad Request")
+            else:
+                macAdressData.oui = oui = result['macPrefix']
+                macAdressData.isPrivate = isPrivate = result['isPrivate']
+                macAdressData.company_name = company_name = result['company']
+                macAdressData.company_address = company_address = result['address']
+                macAdressData.country_code = country_code = result['country']
+
+            dbLookups.insert(macAdressData)
         else:
-            oui = result['macPrefix']
-            isPrivate = result['isPrivate']
-            company_name = result['company']
-            company_address = result['address']
-            country_code = result['country']
+            oui = macAdressData.oui
+            isPrivate = macAdressData.isPrivate
+            company_name = macAdressData.company_name
+            company_address = macAdressData.company_address
+            country_code = macAdressData.country_code
 
         return {
             'oui':oui,

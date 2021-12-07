@@ -11,12 +11,10 @@ app = Flask(__name__)
 # Allow all origins
 CORS(app, resources={r'*': {'origins': '*'}})
 
-db = dbAttacks
-
 @app.route('/attacks')
 def index():
     try:
-        deauthAttacks = list(db.all())
+        deauthAttacks = list(dbAttacks.all())
         for item in deauthAttacks:
             print(item)
 

@@ -3,3 +3,5 @@ Flask_Cors==3.0.10
 scapy==2.4.3
 maclookup==1.0.3
 pymongo==4.0
+jinja2>=3.1.4 # not directly required, pinned by Snyk to avoid a vulnerability
+werkzeug>=2.2.3 # not directly required, pinned by Snyk to avoid a vulnerability

@@ -2,4 +2,5 @@ Flask==2.0.2
 Flask_Cors==3.0.10
 scapy==2.4.3
 maclookup==1.0.3
-pymongo==4.0
+pymongo==4.6.3
+zipp>=3.19.1 # not directly required, pinned by Snyk to avoid a vulnerability
